@@ -72,9 +72,9 @@ function App() {
 
   return (
     <Router>
-      <SchemaMarkup />
       <AnalyticsTracker />
       <HelmetProvider>
+        <SchemaMarkup />
         <AuthProvider>
           <Layout>
             <ToastContainer
