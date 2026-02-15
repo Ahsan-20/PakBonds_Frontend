@@ -10,6 +10,7 @@ const Download = () => {
 
     // Data
     const [options, setOptions] = useState([]);
+    const [optionsLoading, setOptionsLoading] = useState(true);
     const [selectedOption, setSelectedOption] = useState(null);
     const [dates, setDates] = useState([]);
     const [dateUrls, setDateUrls] = useState({});
@@ -22,6 +23,7 @@ const Download = () => {
 
     useEffect(() => {
         const fetchOptions = async () => {
+            setOptionsLoading(true);
             try {
                 const response = await api.get('/prize_bond_options');
                 const opts = Object.entries(response.data)
@@ -34,6 +36,8 @@ const Download = () => {
                 setOptions(opts);
             } catch (error) {
                 toast.error('Failed to load options.');
+            } finally {
+                setOptionsLoading(false);
             }
         };
         fetchOptions();
@@ -199,28 +203,35 @@ const Download = () => {
 
             {/* STEP 1: Select Bond Type */}
             {step === 1 && (
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 animate-fade-in">
-                    {options.map((opt) => {
-                        const conf = getConfig(opt.denomination);
-                        return (
-                            <button
-                                key={opt.name}
-                                onClick={() => handleSelectBond(opt)}
-                                className={`group relative p-6 rounded-2xl bg-glass border border-white/5 ${conf.border} ${conf.glow} hover:bg-white/[0.03] transition-all duration-300 overflow-hidden text-left`}
-                            >
-                                <div className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity bg-gradient-to-tr from-white to-transparent`} />
-                                <p className="text-white/40 text-xs font-mono mb-2">PKR</p>
-                                <p className={`text-4xl font-bold font-mono ${conf.color} drop-shadow-lg`}>
-                                    {opt.denomination}
-                                </p>
-                                <div className="mt-4 flex items-center justify-between">
-                                    <span className="text-sm text-white/60 group-hover:text-white transition-colors">View Archives</span>
-                                    <ChevronRight size={16} className="text-white/20 group-hover:text-white -translate-x-2 group-hover:translate-x-0 transition-all" />
-                                </div>
-                            </button>
-                        );
-                    })}
-                </div>
+                optionsLoading ? (
+                    <div className="py-32 flex flex-col items-center justify-center opacity-50">
+                        <Loader2 className="w-12 h-12 text-blue-400 animate-spin mb-4" />
+                        <p className="text-white/50 font-mono tracking-widest animate-pulse">LOADING DENOMINATIONS...</p>
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 animate-fade-in">
+                        {options.map((opt) => {
+                            const conf = getConfig(opt.denomination);
+                            return (
+                                <button
+                                    key={opt.name}
+                                    onClick={() => handleSelectBond(opt)}
+                                    className={`group relative p-6 rounded-2xl bg-glass border border-white/5 ${conf.border} ${conf.glow} hover:bg-white/[0.03] transition-all duration-300 overflow-hidden text-left`}
+                                >
+                                    <div className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity bg-gradient-to-tr from-white to-transparent`} />
+                                    <p className="text-white/40 text-xs font-mono mb-2">PKR</p>
+                                    <p className={`text-4xl font-bold font-mono ${conf.color} drop-shadow-lg`}>
+                                        {opt.denomination}
+                                    </p>
+                                    <div className="mt-4 flex items-center justify-between">
+                                        <span className="text-sm text-white/60 group-hover:text-white transition-colors">View Archives</span>
+                                        <ChevronRight size={16} className="text-white/20 group-hover:text-white -translate-x-2 group-hover:translate-x-0 transition-all" />
+                                    </div>
+                                </button>
+                            );
+                        })}
+                    </div>
+                )
             )}
 
             {/* STEP 2: Select Date */}

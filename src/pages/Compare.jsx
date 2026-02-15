@@ -142,6 +142,7 @@ const Compare = () => {
 
     // Data
     const [options, setOptions] = useState([]);
+    const [optionsLoading, setOptionsLoading] = useState(true);
     const [selectedOption, setSelectedOption] = useState(null);
     const [dates, setDates] = useState([]);
     const [datesLoading, setDatesLoading] = useState(false);
@@ -151,12 +152,25 @@ const Compare = () => {
     const [results, setResults] = useState(null);
     const [savedBonds, setSavedBonds] = useState([]);
 
+    // Helper for robust date sorting
+    const parseDateForSort = (str) => {
+        const parts = (str || '').split(/[-\/]/).map(s => s.trim());
+        if (parts.length === 3) {
+            // Assume DD-MM-YYYY if 4 digits are at the end
+            if (parts[2].length === 4) return new Date(`${parts[2]}-${parts[1]}-${parts[0]}`).getTime();
+            // Assume YYYY-MM-DD if 4 digits are at the start
+            if (parts[0].length === 4) return new Date(`${parts[0]}-${parts[1]}-${parts[2]}`).getTime();
+        }
+        return new Date(str).getTime();
+    };
+
     // Logic Hooks
     useEffect(() => {
         if (user?.email) api.get('/get_winning_bonds').then(r => setSavedBonds(r.data.winning_bonds || [])).catch(() => { });
     }, [user]);
 
     useEffect(() => {
+        setOptionsLoading(true);
         api.get('/prize_bond_options').then(res => {
             const opts = Object.entries(res.data)
                 .map(([name, url]) => {
@@ -165,7 +179,9 @@ const Compare = () => {
                 })
                 .filter(opt => opt.denomination);
             setOptions(opts);
-        }).catch(() => toast.error('Failed to load bond options.'));
+        })
+            .catch(() => toast.error('Failed to load bond options.'))
+            .finally(() => setOptionsLoading(false));
     }, []);
 
     useEffect(() => {
@@ -174,7 +190,8 @@ const Compare = () => {
         setDates([]); // Clear previous dates immediately
         api.get('/available_prize_bond_dates', { params: { bond_url: selectedOption.url } })
             .then(res => {
-                setDates(Object.keys(res.data).sort((a, b) => new Date(b).getTime() - new Date(a).getTime()));
+                const sortedDates = Object.keys(res.data).sort((a, b) => parseDateForSort(b) - parseDateForSort(a));
+                setDates(sortedDates);
             })
             .catch(() => toast.error('Failed to load dates.'))
             .finally(() => setDatesLoading(false));
@@ -266,28 +283,35 @@ const Compare = () => {
             <div className="min-h-[400px]">
                 {/* STEP 1: Select Bond */}
                 {step === 1 && (
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 animate-fade-in">
-                        {options.map((opt) => {
-                            const conf = getConfig(opt.denomination);
-                            return (
-                                <button
-                                    key={opt.name}
-                                    onClick={() => handleSelectBond(opt)}
-                                    className={`group relative p-6 rounded-2xl bg-glass border border-white/5 hover:border-cyan-500/50 hover:bg-white/[0.03] transition-all duration-300 overflow-hidden text-left`}
-                                >
-                                    <div className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity bg-gradient-to-tr from-cyan-500 to-transparent`} />
-                                    <p className="text-white/40 text-xs font-mono mb-2">PKR</p>
-                                    <p className={`text-3xl font-bold font-mono ${conf.color} drop-shadow-lg`}>
-                                        {conf.shortLabel}
-                                    </p>
-                                    <div className="mt-4 flex items-center justify-between">
-                                        <span className="text-sm text-white/60 group-hover:text-white transition-colors">{conf.label}</span>
-                                        <ChevronRight size={16} className="text-white/20 group-hover:text-cyan-400 -translate-x-2 group-hover:translate-x-0 transition-all" />
-                                    </div>
-                                </button>
-                            );
-                        })}
-                    </div>
+                    optionsLoading ? (
+                        <div className="py-32 flex flex-col items-center justify-center opacity-50">
+                            <Loader2 className="w-12 h-12 text-cyan-400 animate-spin mb-4" />
+                            <p className="text-white/50 font-mono tracking-widest animate-pulse">LOADING DENOMINATIONS...</p>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 animate-fade-in">
+                            {options.map((opt) => {
+                                const conf = getConfig(opt.denomination);
+                                return (
+                                    <button
+                                        key={opt.name}
+                                        onClick={() => handleSelectBond(opt)}
+                                        className={`group relative p-6 rounded-2xl bg-glass border border-white/5 hover:border-cyan-500/50 hover:bg-white/[0.03] transition-all duration-300 overflow-hidden text-left`}
+                                    >
+                                        <div className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity bg-gradient-to-tr from-cyan-500 to-transparent`} />
+                                        <p className="text-white/40 text-xs font-mono mb-2">PKR</p>
+                                        <p className={`text-3xl font-bold font-mono ${conf.color} drop-shadow-lg`}>
+                                            {conf.shortLabel}
+                                        </p>
+                                        <div className="mt-4 flex items-center justify-between">
+                                            <span className="text-sm text-white/60 group-hover:text-white transition-colors">{conf.label}</span>
+                                            <ChevronRight size={16} className="text-white/20 group-hover:text-cyan-400 -translate-x-2 group-hover:translate-x-0 transition-all" />
+                                        </div>
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    )
                 )}
 
                 {/* STEP 2: Select Date */}
