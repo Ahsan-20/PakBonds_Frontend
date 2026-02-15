@@ -8,6 +8,7 @@ import { ToastContainer } from 'react-toastify';
 import { Loader2 } from 'lucide-react';
 import ReactGA from 'react-ga4';
 import 'react-toastify/dist/ReactToastify.css';
+import SchemaMarkup from './components/common/SchemaMarkup';
 
 // Lazy Load Pages
 const Home = lazy(() => import('./pages/Home'));
@@ -71,6 +72,7 @@ function App() {
 
   return (
     <Router>
+      <SchemaMarkup />
       <AnalyticsTracker />
       <HelmetProvider>
         <AuthProvider>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Menu, X, LogOut, ChevronDown, User, Lock, Settings, Bell } from 'lucide-react';
+import { Menu, X, LogOut, ChevronDown, User, Lock, Settings, Hexagon, Bell } from 'lucide-react';
 import Logo from './common/Logo';
 
 const Navbar = () => {
@@ -72,8 +72,18 @@ const Navbar = () => {
                 <div className="max-w-7xl mx-auto px-6">
                     <div className="flex items-center justify-between h-20">
                         {/* Logo */}
-                        <Link to="/">
-                            <Logo />
+                        <Link to="/" className="flex items-center gap-3 group">
+                            <div className="relative w-10 h-10 flex items-center justify-center">
+                                <Hexagon size={40} className="text-zinc-800 absolute inset-0 fill-zinc-900/50" strokeWidth={1} />
+                                <Hexagon size={24} className="text-cyan-500 relative z-10 group-hover:rotate-90 transition-transform duration-500" strokeWidth={2.5} />
+                                <div className="absolute inset-0 bg-cyan-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                            </div>
+
+                            <div className="flex flex-col">
+                                <span className="text-lg font-bold text-white tracking-tight leading-none group-hover:text-cyan-400 transition-colors">
+                                    Pak<span className="text-zinc-400">Bonds</span>
+                                </span>
+                            </div>
                         </Link>
 
                         {/* Desktop Nav */}
