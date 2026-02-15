@@ -9,14 +9,19 @@ const FeatureHighlights = () => {
     ];
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto animate-fade-in delay-300 px-4 sm:px-6 mb-20">
+        <div className="relative z-20 -mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto px-4 sm:px-6 mb-24 animate-fade-in-up delay-200">
             {features.map((item, i) => (
-                <div key={i} className="p-6 rounded-2xl bg-white/[0.02] border border-white/[0.05] flex flex-col items-center hover:bg-white/[0.04] transition-colors group">
-                    <div className="w-10 h-10 rounded-full bg-cyan-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <item.icon size={20} className="text-cyan-400" />
+                <div key={i} className="group relative p-8 rounded-2xl bg-zinc-900/50 border border-white/5 backdrop-blur-md overflow-hidden hover:border-cyan-500/30 transition-all duration-300 hover:shadow-[0_0_30px_-5px_rgba(6,182,212,0.15)]">
+                    {/* Gradient Blob for Glow Effect */}
+                    <div className="absolute -top-10 -right-10 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl group-hover:bg-cyan-500/20 transition-all duration-500"></div>
+
+                    <div className="relative z-10 flex flex-col items-center text-center">
+                        <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-500/10 to-blue-600/5 border border-white/5 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 shadow-lg shadow-cyan-900/20">
+                            <item.icon size={28} className="text-cyan-400 drop-shadow-md" />
+                        </div>
+                        <h3 className="text-white text-lg font-bold mb-2 tracking-wide group-hover:text-cyan-400 transition-colors">{item.label}</h3>
+                        <p className="text-sm text-zinc-400 leading-relaxed max-w-[200px]">{item.desc}</p>
                     </div>
-                    <h3 className="text-white font-bold mb-1">{item.label}</h3>
-                    <p className="text-sm text-zinc-500 text-center">{item.desc}</p>
                 </div>
             ))}
         </div>

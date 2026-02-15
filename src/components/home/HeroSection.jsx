@@ -4,7 +4,7 @@ import { ArrowRight } from 'lucide-react';
 
 const HeroSection = () => {
     return (
-        <section className="relative pt-40 pb-20 sm:pt-48 sm:pb-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
+        <section className="relative pt-40 pb-12 sm:pt-48 sm:pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
             {/* Background Elements */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
                 <div className="absolute top-[-10%] left-[20%] w-[500px] h-[500px] rounded-full bg-cyan-500/5 blur-[120px] animate-pulse-slow" />

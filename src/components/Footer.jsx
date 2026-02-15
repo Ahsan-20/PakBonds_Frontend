@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Shield, Mail, FileText, Lock, Hexagon, ArrowUpRight } from 'lucide-react';
+import { Shield, Mail, FileText, Lock, ArrowUpRight } from 'lucide-react';
+import Logo from './common/Logo';
 
 const Footer = () => {
     const currentYear = new Date().getFullYear();
@@ -15,15 +16,8 @@ const Footer = () => {
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
                     {/* Brand Column (Left) */}
                     <div className="md:col-span-4 space-y-6">
-                        <Link to="/" className="flex items-center gap-3 group w-fit">
-                            <div className="relative w-8 h-8 flex items-center justify-center">
-                                <Hexagon size={32} className="text-zinc-800 absolute inset-0 fill-zinc-900/50" strokeWidth={1} />
-                                <Hexagon size={20} className="text-cyan-500 relative z-10 group-hover:rotate-90 transition-transform duration-500" strokeWidth={2.5} />
-                                <div className="absolute inset-0 bg-cyan-500/20 blur-lg opacity-0 group-hover:opacity-100 transition-opacity" />
-                            </div>
-                            <span className="text-xl font-bold text-white tracking-tight group-hover:text-cyan-400 transition-colors">
-                                Pak<span className="text-zinc-500">Bonds</span>
-                            </span>
+                        <Link to="/" className="inline-block">
+                            <Logo />
                         </Link>
 
                         <p className="text-zinc-400 text-sm leading-relaxed max-w-xs">
