@@ -1,0 +1,129 @@
+import React, { useState } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { toast } from 'react-toastify';
+import { Lock, Mail, Loader2, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
+
+const Login = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
+    const { login } = useAuth();
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const from = location.state?.from?.pathname || '/dashboard';
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        const result = await login(email, password);
+        setLoading(false);
+
+        if (result.success) {
+            toast.success('Welcome back, Bond Holder.');
+            navigate(from, { replace: true });
+        } else {
+            toast.error(result.message);
+        }
+    };
+
+    return (
+        <div className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] py-12 px-4 relative overflow-hidden">
+            <Helmet>
+                <title>Login | BondChecker</title>
+            </Helmet>
+
+            {/* Background Gradient */}
+            <div className="absolute inset-0 bg-gradient-to-b from-cyan-900/10 to-[#050505] pointer-events-none" />
+
+            {/* Background Orbs (Simpler & Verified Safe) */}
+            <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
+
+            {/* Main Content Container - Explicit Z-Index */}
+            <div className="w-full max-w-md relative z-10">
+                <div className="text-center mb-8">
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-cyan-900/20 border border-cyan-500/20 mb-6 shadow-[0_0_15px_rgba(34,211,238,0.1)]">
+                        <ShieldCheck className="w-8 h-8 text-cyan-400" />
+                    </div>
+                    <h2 className="text-3xl font-bold text-white mb-2">Welcome Back</h2>
+                    <p className="text-zinc-400 text-sm uppercase tracking-widest">Secure Portal</p>
+                </div>
+
+                {/* Glass Card - Flat Design, No 3D */}
+                <div className="bg-[#0a0a0b]/80 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
+                    {/* Subtle Gradient Border Effect */}
+                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-50" />
+
+                    <form className="space-y-6" onSubmit={handleSubmit}>
+                        <div className="space-y-2">
+                            <label className="text-xs font-mono text-cyan-400 uppercase tracking-widest ml-1">Email</label>
+                            <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <Mail className="h-5 w-5 text-zinc-500" />
+                                </div>
+                                <input
+                                    type="email"
+                                    required
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className="block w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 transition-all"
+                                    placeholder="user@example.com"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="space-y-2">
+                            <div className="flex items-center justify-between">
+                                <label className="text-xs font-mono text-cyan-400 uppercase tracking-widest ml-1">Password</label>
+                                <Link to="/forgot-password" className="text-xs text-zinc-500 hover:text-cyan-400 transition-colors">
+                                    Forgot?
+                                </Link>
+                            </div>
+                            <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <Lock className="h-5 w-5 text-zinc-500" />
+                                </div>
+                                <input
+                                    type="password"
+                                    required
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    className="block w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 transition-all"
+                                    placeholder="••••••••"
+                                />
+                            </div>
+                        </div>
+
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="w-full flex items-center justify-center py-3.5 px-4 rounded-xl text-sm font-bold text-black bg-cyan-400 hover:bg-cyan-300 transition-all disabled:opacity-50 hover:shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:-translate-y-0.5"
+                        >
+                            {loading ? (
+                                <Loader2 className="animate-spin h-5 w-5" />
+                            ) : (
+                                <>
+                                    LOGIN <ArrowRight className="ml-2 h-4 w-4" />
+                                </>
+                            )}
+                        </button>
+                    </form>
+
+                    <div className="mt-8 pt-6 border-t border-white/10 text-center">
+                        <p className="text-zinc-500 text-sm">
+                            Don't have an account?{' '}
+                            <Link to="/signup" className="text-cyan-400 hover:text-cyan-300 font-medium transition-colors">
+                                Sign Up
+                            </Link>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default Login;

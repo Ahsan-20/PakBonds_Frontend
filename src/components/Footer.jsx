@@ -1,0 +1,113 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Shield, Mail, FileText, Lock, Hexagon, ArrowUpRight } from 'lucide-react';
+
+const Footer = () => {
+    const currentYear = new Date().getFullYear();
+
+    return (
+        <footer className="relative bg-[#050505] border-t border-white/[0.08] overflow-hidden">
+            {/* Background Glow */}
+            <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-cyan-500/5 rounded-full blur-[120px] pointer-events-none translate-y-[-50%]" />
+            <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-blue-600/5 rounded-full blur-[120px] pointer-events-none translate-y-[50%]" />
+
+            <div className="max-w-7xl mx-auto px-6 py-16 relative z-10">
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
+                    {/* Brand Column (Left) */}
+                    <div className="md:col-span-4 space-y-6">
+                        <Link to="/" className="flex items-center gap-3 group w-fit">
+                            <div className="relative w-8 h-8 flex items-center justify-center">
+                                <Hexagon size={32} className="text-zinc-800 absolute inset-0 fill-zinc-900/50" strokeWidth={1} />
+                                <Hexagon size={20} className="text-cyan-500 relative z-10 group-hover:rotate-90 transition-transform duration-500" strokeWidth={2.5} />
+                                <div className="absolute inset-0 bg-cyan-500/20 blur-lg opacity-0 group-hover:opacity-100 transition-opacity" />
+                            </div>
+                            <span className="text-xl font-bold text-white tracking-tight group-hover:text-cyan-400 transition-colors">
+                                Pak<span className="text-zinc-500">Bonds</span>
+                            </span>
+                        </Link>
+
+                        <p className="text-zinc-400 text-sm leading-relaxed max-w-xs">
+                            The advanced automated bond checking platform for the modern Pakistani investor. Secure, fast, and always free.
+                        </p>
+
+                        <div className="flex items-center gap-3">
+                            <div className="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-xs font-mono text-green-400 flex items-center gap-2">
+                                <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                                SYSTEMS OPERATIONAL
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Navigation Columns (Right) */}
+                    <div className="md:col-span-8 grid grid-cols-2 sm:grid-cols-3 gap-8">
+                        {/* Column 1 */}
+                        <div>
+                            <h4 className="text-white font-mono text-sm font-bold mb-6 tracking-wider uppercase opacity-50">Platform</h4>
+                            <ul className="space-y-4">
+                                {['Login', 'Create Account', 'Check Results', 'Download Lists'].map((item, i) => (
+                                    <li key={i}>
+                                        <Link
+                                            to={item === 'Create Account' ? '/signup' : `/${item.toLowerCase().replace(' ', '-')}`}
+                                            className="text-zinc-500 hover:text-cyan-400 text-sm transition-colors flex items-center gap-1 group"
+                                        >
+                                            {item}
+                                            <ArrowUpRight size={12} className="opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all" />
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        {/* Column 2 */}
+                        <div>
+                            <h4 className="text-white font-mono text-sm font-bold mb-6 tracking-wider uppercase opacity-50">Resources</h4>
+                            <ul className="space-y-4">
+                                {[
+                                    { label: 'How to Check', path: '/blog/how-to-check' },
+                                    { label: 'Winning Odds', path: '/blog/winning-odds' },
+                                    { label: 'Automation Guide', path: '/blog/automation-guide' },
+                                    { label: 'All Articles', path: '/blog' },
+                                ].map((item, i) => (
+                                    <li key={i}>
+                                        <Link to={item.path} className="text-zinc-500 hover:text-cyan-400 text-sm transition-colors block">
+                                            {item.label}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        {/* Column 3 */}
+                        <div>
+                            <h4 className="text-white font-mono text-sm font-bold mb-6 tracking-wider uppercase opacity-50">Legal</h4>
+                            <ul className="space-y-4">
+                                <li><Link to="/privacy-policy" className="text-zinc-500 hover:text-white text-sm transition-colors">Privacy Policy</Link></li>
+                                <li><Link to="/terms-of-service" className="text-zinc-500 hover:text-white text-sm transition-colors">Terms of Service</Link></li>
+                                <li className="pt-4">
+                                    <a href="mailto:support@pakbonds.com" className="text-zinc-400 hover:text-cyan-400 text-sm transition-colors flex items-center gap-2">
+                                        <Mail size={14} /> Contact Support
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Bottom Bar */}
+                <div className="pt-8 border-t border-white/[0.05] flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div className="text-zinc-600 text-xs font-mono">
+                        © {currentYear} PAKBONDS // INC.
+                    </div>
+                    <div className="flex items-center gap-6">
+                        <div className="flex items-center gap-2 text-zinc-600 text-xs font-mono">
+                            <Lock size={12} />
+                            SSL ENCRYPTED
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    );
+};
+
+export default Footer;

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://pakbonds.com/sitemap.xml
