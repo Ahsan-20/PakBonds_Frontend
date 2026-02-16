@@ -8,6 +8,7 @@ import { ToastContainer } from 'react-toastify';
 import { Loader2 } from 'lucide-react';
 import ReactGA from 'react-ga4';
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react"
 import 'react-toastify/dist/ReactToastify.css';
 import SchemaMarkup from './components/common/SchemaMarkup';
 import LoadingScreen from './components/LoadingScreen';
@@ -70,6 +71,7 @@ function App() {
   return (
     <Router>
       <Analytics />
+      <SpeedInsights />
       <AnalyticsTracker />
       <HelmetProvider>
         <SchemaMarkup />
