@@ -7,8 +7,10 @@ import { HelmetProvider } from 'react-helmet-async';
 import { ToastContainer } from 'react-toastify';
 import { Loader2 } from 'lucide-react';
 import ReactGA from 'react-ga4';
+import { Analytics } from "@vercel/analytics/react";
 import 'react-toastify/dist/ReactToastify.css';
 import SchemaMarkup from './components/common/SchemaMarkup';
+import LoadingScreen from './components/LoadingScreen';
 
 // Lazy Load Pages
 const Home = lazy(() => import('./pages/Home'));
@@ -42,12 +44,7 @@ const AutomationGuide = lazy(() => import('./pages/Blog/posts/AutomationGuide'))
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('./pages/TermsOfService'));
 
-// Loading Fallback
-const PageLoader = () => (
-  <div className="min-h-[60vh] flex items-center justify-center">
-    <Loader2 className="w-10 h-10 text-white/20 animate-spin" />
-  </div>
-);
+
 
 // Analytics Component
 const AnalyticsTracker = () => {
@@ -72,6 +69,7 @@ function App() {
 
   return (
     <Router>
+      <Analytics />
       <AnalyticsTracker />
       <HelmetProvider>
         <SchemaMarkup />
@@ -89,7 +87,7 @@ function App() {
               pauseOnHover
               theme="dark"
             />
-            <Suspense fallback={<PageLoader />}>
+            <Suspense fallback={<LoadingScreen />}>
               <Routes>
                 {/* Public Routes */}
                 <Route path="/" element={<Home />} />

@@ -1,67 +1,43 @@
 import React from 'react';
+import { Hexagon } from 'lucide-react';
 
 const LoadingScreen = ({ message = "Loading..." }) => {
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0f0a1a]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#050505] transition-opacity duration-300">
             {/* Background effects */}
-            <div className="absolute inset-0 bg-mesh opacity-50"></div>
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(6,182,212,0.1)_0%,transparent_70%)]"></div>
 
-            {/* Loader container */}
-            <div className="relative flex flex-col items-center">
-                {/* Orbiting particles */}
-                <div className="absolute w-32 h-32">
-                    {[...Array(3)].map((_, i) => (
-                        <div
-                            key={i}
-                            className="absolute w-2 h-2 rounded-full bg-purple-500"
-                            style={{
-                                animation: `orbit ${3 + i * 0.5}s linear infinite`,
-                                animationDelay: `${i * 0.3}s`,
-                                opacity: 0.6 - i * 0.15,
-                            }}
-                        />
-                    ))}
-                </div>
-
-                {/* Pulsing rings */}
-                <div className="absolute w-24 h-24 rounded-full border border-purple-500/30 animate-ping" style={{ animationDuration: '2s' }}></div>
-                <div className="absolute w-32 h-32 rounded-full border border-blue-500/20 animate-ping" style={{ animationDuration: '2.5s', animationDelay: '0.5s' }}></div>
-
-                {/* Main coin */}
-                <div
-                    className="relative w-20 h-20 rounded-full flex items-center justify-center"
-                    style={{
-                        background: 'linear-gradient(135deg, #f59e0b 0%, #fbbf24 50%, #d97706 100%)',
-                        boxShadow: '0 0 40px rgba(245, 158, 11, 0.4), inset 0 2px 4px rgba(255,255,255,0.3)',
-                        animation: 'coin-spin 2s ease-in-out infinite',
-                    }}
-                >
-                    {/* Coin emblem */}
-                    <div className="text-2xl font-bold text-amber-900/80">₨</div>
-
-                    {/* Shine effect */}
-                    <div
-                        className="absolute inset-0 rounded-full"
-                        style={{
-                            background: 'linear-gradient(135deg, rgba(255,255,255,0.4) 0%, transparent 50%)',
-                        }}
+            <div className="relative flex flex-col items-center gap-8">
+                {/* Logo Animation Container */}
+                <div className="relative w-24 h-24 flex items-center justify-center">
+                    {/* Outer Hexagon - Static base */}
+                    <Hexagon
+                        size={96}
+                        className="text-zinc-800 absolute inset-0 fill-zinc-900/50 drop-shadow-2xl"
+                        strokeWidth={1}
                     />
+
+                    {/* Inner Hexagon - Rotating and pulsing */}
+                    <Hexagon
+                        size={48}
+                        className="text-cyan-500 relative z-10 animate-[spin_3s_linear_infinite]"
+                        strokeWidth={2.5}
+                    />
+
+                    {/* Glow Effects */}
+                    <div className="absolute inset-0 bg-cyan-500/30 blur-2xl animate-pulse" />
+                    <div className="absolute inset-0 bg-cyan-400/20 blur-xl animate-ping" style={{ animationDuration: '2s' }} />
                 </div>
 
-                {/* Loading text */}
-                <div className="mt-8 text-center">
-                    <p className="text-white/80 text-lg font-medium">{message}</p>
-                    <div className="flex justify-center gap-1 mt-2">
-                        {[...Array(3)].map((_, i) => (
-                            <div
-                                key={i}
-                                className="w-2 h-2 rounded-full bg-purple-500"
-                                style={{
-                                    animation: 'pulse-glow 1s ease-in-out infinite',
-                                    animationDelay: `${i * 0.2}s`,
-                                }}
-                            />
-                        ))}
+                {/* Loading Text */}
+                <div className="flex flex-col items-center gap-2">
+                    <span className="text-xl font-bold text-white tracking-widest uppercase animate-pulse">
+                        {message}
+                    </span>
+                    <div className="flex gap-1.5">
+                        <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-bounce" style={{ animationDelay: '0s' }} />
+                        <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-bounce" style={{ animationDelay: '0.15s' }} />
+                        <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-bounce" style={{ animationDelay: '0.3s' }} />
                     </div>
                 </div>
             </div>

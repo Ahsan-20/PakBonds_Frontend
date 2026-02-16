@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Bell, Check, Trash2, Info, Trophy, AlertTriangle, XCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import api from '../api';
+import LoadingScreen from '../components/LoadingScreen';
 
 const NotificationHistory = () => {
     const [notifications, setNotifications] = useState([]);
@@ -12,34 +14,19 @@ const NotificationHistory = () => {
     // Fetch notifications
     const fetchNotifications = async () => {
         try {
+            // Check for token presence (api interceptor handles adding it, but we can check early)
             const token = localStorage.getItem('access_token');
             if (!token) {
                 navigate('/login');
                 return;
             }
 
-            const response = await fetch('http://localhost:8000/notifications/', {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-
-            if (response.status === 401) {
-                // Token invalid/expired
-                localStorage.removeItem('access_token');
-                navigate('/login');
-                return;
-            }
-
-            if (!response.ok) {
-                const errData = await response.json().catch(() => ({}));
-                throw new Error(errData.detail || `Error ${response.status}: Failed to fetch notifications`);
-            }
-
-            const data = await response.json();
-            setNotifications(data);
+            const response = await api.get('/notifications/');
+            setNotifications(response.data);
         } catch (err) {
-            setError(err.message);
+            console.error("Fetch notifications error:", err);
+            // 401 is handled by interceptor (optional check here if needed)
+            setError(err.message || 'Failed to fetch notifications');
         } finally {
             setLoading(false);
         }
@@ -52,11 +39,7 @@ const NotificationHistory = () => {
     // Mark all as read
     const markAllRead = async () => {
         try {
-            const token = localStorage.getItem('access_token');
-            await fetch('http://localhost:8000/notifications/read-all', {
-                method: 'PUT',
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
+            await api.put('/notifications/read-all');
             // Update local state
             setNotifications(notifications.map(n => ({ ...n, is_read: true })));
         } catch (err) {
@@ -67,11 +50,7 @@ const NotificationHistory = () => {
     // Mark single as read
     const markAsRead = async (id) => {
         try {
-            const token = localStorage.getItem('access_token');
-            await fetch(`http://localhost:8000/notifications/${id}/read`, {
-                method: 'PUT',
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
+            await api.put(`/notifications/${id}/read`);
             setNotifications(notifications.map(n => n._id === id ? { ...n, is_read: true } : n));
         } catch (err) {
             console.error("Failed to mark read", err);
@@ -86,6 +65,8 @@ const NotificationHistory = () => {
             default: return <Info className="text-blue-400" size={24} />;
         }
     };
+
+
 
     return (
         <div className="min-h-screen pt-32 pb-20 max-w-4xl mx-auto px-6">
@@ -112,7 +93,7 @@ const NotificationHistory = () => {
             </header>
 
             {loading ? (
-                <div className="text-center py-20 text-zinc-500">Loading...</div>
+                <LoadingScreen />
             ) : error ? (
                 <div className="text-center py-20 text-red-400">Error: {error}</div>
             ) : notifications.length === 0 ? (

@@ -7,6 +7,7 @@ import {
     ShieldCheck, Zap, Globe
 } from 'lucide-react';
 import api from '../api';
+import LoadingScreen from '../components/LoadingScreen';
 
 // --- Design System Tokens ---
 // Backgrounds: Obsidian (#050505), Glass (#ffffff05)
@@ -247,6 +248,8 @@ const Dashboard = () => {
     }, [user]);
 
     const username = user?.user_id || user?.email?.split('@')[0] || 'Agent';
+
+    if (loading) return <LoadingScreen message="Loading Dashboard..." />;
 
     return (
         <div className="min-h-screen bg-[#050505] text-white">

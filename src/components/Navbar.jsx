@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Menu, X, LogOut, ChevronDown, User, Lock, Settings, Hexagon, Bell } from 'lucide-react';
+import api from '../api';
 
 const Navbar = () => {
     const { user, logout } = useAuth();
@@ -18,12 +19,10 @@ const Navbar = () => {
 
         const fetchUnread = async () => {
             try {
-                const token = localStorage.getItem('access_token');
-                const response = await fetch('http://localhost:8000/notifications/', {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                if (response.ok) {
-                    const data = await response.json();
+                // Token is auto-injected by api interceptor if it exists in localStorage
+                const response = await api.get('/notifications/');
+                if (response.status === 200) {
+                    const data = response.data;
                     const count = data.filter(n => !n.is_read).length;
                     setUnreadCount(count);
                 }
