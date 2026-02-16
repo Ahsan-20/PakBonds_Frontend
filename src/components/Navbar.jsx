@@ -10,6 +10,9 @@ const Navbar = () => {
     const location = useLocation();
     const [isOpen, setIsOpen] = useState(false);
     const [showUserMenu, setShowUserMenu] = useState(false);
+    const [isPrizeBondsOpen, setIsPrizeBondsOpen] = useState(false);
+    const [isMyToolsOpen, setIsMyToolsOpen] = useState(false);
+    const [isResourcesOpen, setIsResourcesOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [unreadCount, setUnreadCount] = useState(0);
 
@@ -56,7 +59,6 @@ const Navbar = () => {
         { name: 'Download', path: '/download' },
     ] : [
         { name: 'Home', path: '/' },
-        { name: 'Blog', path: '/blog' },
     ];
 
     const isActive = (path) => location.pathname === path;
@@ -86,18 +88,50 @@ const Navbar = () => {
 
                         {/* Desktop Nav */}
                         <div className="hidden md:flex items-center gap-1">
-                            {navLinks.map((link) => (
-                                <Link
-                                    key={link.name}
-                                    to={link.path}
-                                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${isActive(link.path)
-                                        ? 'text-white bg-white/[0.08]'
-                                        : 'text-zinc-400 hover:text-white hover:bg-white/[0.02]'
-                                        }`}
-                                >
-                                    {link.name}
+                            {user ? (
+                                <>
+                                    <Link to="/dashboard" className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${isActive('/dashboard') ? 'text-white bg-white/[0.08]' : 'text-zinc-400 hover:text-white hover:bg-white/[0.02]'}`}>
+                                        Dashboard
+                                    </Link>
+
+                                    {/* My Tools Dropdown */}
+                                    <div className="relative group">
+                                        <button className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-1 ${['/manage-bonds', '/compare', '/my-wins'].includes(location.pathname) ? 'text-white' : 'text-zinc-300 hover:text-white'}`}>
+                                            My Tools <ChevronDown size={14} className="group-hover:rotate-180 transition-transform" />
+                                        </button>
+                                        <div className="absolute top-full left-0 w-48 bg-[#0a0a0b] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top pt-2">
+                                            <div className="py-2 flex flex-col">
+                                                <Link to="/manage-bonds" className="px-4 py-2 text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/5 text-left">My Bonds</Link>
+                                                <Link to="/compare" className="px-4 py-2 text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/5 text-left">Check Results</Link>
+                                                <Link to="/my-wins" className="px-4 py-2 text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/5 text-left">My Wins</Link>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                            ) : (
+                                <Link to="/" className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${isActive('/') ? 'text-white bg-white/[0.08]' : 'text-zinc-400 hover:text-white hover:bg-white/[0.02]'}`}>
+                                    Home
                                 </Link>
-                            ))}
+                            )}
+
+                            {/* Resources Dropdown */}
+                            <div className="relative group">
+                                <button className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-1 ${['/download', '/blog', '/about'].some(p => location.pathname.startsWith(p)) ? 'text-white' : 'text-zinc-300 hover:text-white'}`}>
+                                    Resources <ChevronDown size={14} className="group-hover:rotate-180 transition-transform" />
+                                </button>
+                                <div className="absolute top-full left-0 w-56 bg-[#0a0a0b] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top pt-2">
+                                    <div className="py-2 flex flex-col">
+                                        <div className="px-4 py-1.5 text-xs font-bold text-zinc-600 uppercase tracking-wider">Prize Bonds</div>
+                                        {['100', '200', '750', '1500', '25000', '40000'].map(val => (
+                                            <Link key={val} to={`/bonds/${val}`} className="px-4 py-1.5 text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/5 text-left pl-6">Rs. {val}</Link>
+                                        ))}
+                                        <div className="h-px bg-white/5 my-2" />
+                                        <Link to="/download" className="px-4 py-2 text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/5 text-left">Downloads</Link>
+                                        <Link to="/blog" className="px-4 py-2 text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/5 text-left">Blog & Guides</Link>
+                                        <Link to="/about" className="px-4 py-2 text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/5 text-left">About Us</Link>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         {/* Right Side */}
@@ -191,16 +225,98 @@ const Navbar = () => {
                 {/* Mobile Menu */}
                 {isOpen && (
                     <div className="md:hidden bg-[#050505] border-t border-white/[0.08] p-4 space-y-2">
-                        {navLinks.map((link) => (
-                            <Link
-                                key={link.name}
-                                to={link.path}
-                                onClick={() => setIsOpen(false)}
-                                className="block px-4 py-3 rounded-lg text-zinc-400 hover:text-white hover:bg-white/[0.05]"
+                        <Link to="/" onClick={() => setIsOpen(false)} className="block px-4 py-3 rounded-lg text-zinc-400 hover:text-white hover:bg-white/[0.05]">
+                            Home
+                        </Link>
+
+                        {user && (
+                            <div className="border-b border-white/[0.05] pb-2 mb-2">
+                                <button
+                                    onClick={() => setIsMyToolsOpen(!isMyToolsOpen)}
+                                    className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-zinc-400 hover:text-white hover:bg-white/[0.05] transition-colors"
+                                >
+                                    <span className="font-medium text-white">My Tools</span>
+                                    <ChevronDown
+                                        size={16}
+                                        className={`transition-transform duration-200 ${isMyToolsOpen ? 'rotate-180' : ''}`}
+                                    />
+                                </button>
+                                <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isMyToolsOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'}`}>
+                                    <div className="pl-4 space-y-1">
+                                        <Link to="/dashboard" onClick={() => setIsOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/[0.05]">
+                                            Dashboard
+                                        </Link>
+                                        <Link to="/manage-bonds" onClick={() => setIsOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/[0.05]">
+                                            My Bonds
+                                        </Link>
+                                        <Link to="/compare" onClick={() => setIsOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/[0.05]">
+                                            Check Results
+                                        </Link>
+                                        <Link to="/my-wins" onClick={() => setIsOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/[0.05]">
+                                            My Wins
+                                        </Link>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        <div>
+                            <button
+                                onClick={() => setIsResourcesOpen(!isResourcesOpen)}
+                                className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-zinc-400 hover:text-white hover:bg-white/[0.05] transition-colors"
                             >
-                                {link.name}
-                            </Link>
-                        ))}
+                                <span className="font-medium">Resources</span>
+                                <ChevronDown
+                                    size={16}
+                                    className={`transition-transform duration-200 ${isResourcesOpen ? 'rotate-180' : ''}`}
+                                />
+                            </button>
+                            <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isResourcesOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
+                                <div className="pl-4 space-y-1 pb-2">
+                                    {/* Nested Prize Bonds */}
+                                    <div>
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setIsPrizeBondsOpen(!isPrizeBondsOpen);
+                                            }}
+                                            className="w-full flex items-center justify-between px-4 py-2.5 rounded-lg text-sm text-zinc-400 hover:text-white hover:bg-white/[0.05] transition-colors"
+                                        >
+                                            <span className="font-medium text-xs uppercase tracking-wider text-zinc-500">Prize Bonds</span>
+                                            <ChevronDown
+                                                size={14}
+                                                className={`transition-transform duration-200 ${isPrizeBondsOpen ? 'rotate-180' : ''}`}
+                                            />
+                                        </button>
+                                        <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isPrizeBondsOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'}`}>
+                                            <div className="px-4 py-2 grid grid-cols-2 gap-2 bg-zinc-900/30 rounded-lg mx-4">
+                                                {['100', '200', '750', '1500', '25000', '40000'].map(val => (
+                                                    <Link
+                                                        key={val}
+                                                        to={`/bonds/${val}`}
+                                                        onClick={() => setIsOpen(false)}
+                                                        className="text-center py-2 rounded-md text-xs font-mono text-zinc-400 hover:text-cyan-400 hover:bg-white/5 border border-white/[0.02] hover:border-white/10 transition-all"
+                                                    >
+                                                        Rs. {val}
+                                                    </Link>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <Link to="/download" onClick={() => setIsOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/[0.05]">
+                                        Downloads
+                                    </Link>
+                                    <Link to="/blog" onClick={() => setIsOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/[0.05]">
+                                        Blog & Guides
+                                    </Link>
+                                    <Link to="/about" onClick={() => setIsOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/[0.05]">
+                                        About Us
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
+
                         <div className="border-t border-white/[0.08] pt-4 mt-4">
                             {user ? (
                                 <div className="space-y-2">

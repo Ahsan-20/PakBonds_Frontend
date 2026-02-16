@@ -55,19 +55,10 @@ const Footer = () => {
                         {/* Column 2 */}
                         <div>
                             <h4 className="text-white font-mono text-sm font-bold mb-6 tracking-wider uppercase opacity-50">Resources</h4>
-                            <ul className="space-y-4">
-                                {[
-                                    { label: 'How to Check', path: '/blog/how-to-check' },
-                                    { label: 'Winning Odds', path: '/blog/winning-odds' },
-                                    { label: 'Automation Guide', path: '/blog/automation-guide' },
-                                    { label: 'All Articles', path: '/blog' },
-                                ].map((item, i) => (
-                                    <li key={i}>
-                                        <Link to={item.path} className="text-zinc-500 hover:text-cyan-400 text-sm transition-colors block">
-                                            {item.label}
-                                        </Link>
-                                    </li>
-                                ))}
+                            <ul className="space-y-4 text-sm text-zinc-400">
+                                <li><Link to="/blog" className="hover:text-cyan-400 transition-colors">Blog & Guides</Link></li>
+                                <li><Link to="/blog/schedule-2026" className="hover:text-cyan-400 transition-colors">Draw Schedule 2026</Link></li>
+                                <li><Link to="/about" className="hover:text-cyan-400 transition-colors">About Us</Link></li>
                             </ul>
                         </div>
 

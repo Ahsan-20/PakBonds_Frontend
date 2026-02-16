@@ -40,10 +40,12 @@ const TaxInformation = lazy(() => import('./pages/Blog/posts/TaxInformation'));
 const PremiumVsStandard = lazy(() => import('./pages/Blog/posts/PremiumVsStandard'));
 const BondHistory = lazy(() => import('./pages/Blog/posts/BondHistory'));
 const AutomationGuide = lazy(() => import('./pages/Blog/posts/AutomationGuide'));
+const DenominationPage = lazy(() => import('./pages/DenominationPage'));
 
 // Legal Pages
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('./pages/TermsOfService'));
+const About = lazy(() => import('./pages/About'));
 
 
 
@@ -121,9 +123,13 @@ function App() {
                 <Route path="/blog/history" element={<BondHistory />} />
                 <Route path="/blog/automation-guide" element={<AutomationGuide />} />
 
+                {/* SEO Landing Pages */}
+                <Route path="/bonds/:message" element={<DenominationPage />} />
+
                 {/* Legal Routes */}
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/terms-of-service" element={<TermsOfService />} />
+                <Route path="/about" element={<About />} />
 
                 {/* Protected Routes */}
                 <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />

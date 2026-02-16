@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { BookOpen, Zap, BarChart3, HelpCircle, ArrowRight, Shield, Calendar, TrendingUp, Clock, FileText, Landmark, Scale } from 'lucide-react';
 
 const BlogIndex = () => {
@@ -9,6 +9,50 @@ const BlogIndex = () => {
             <Helmet>
                 <title>Prize Bond Blog | Investment Insights & Guides</title>
                 <meta name="description" content="Read the latest updates, guides, and investment strategies for Pakistani Prize Bonds. Master the market with our expert analysis." />
+                <link rel="canonical" href="https://pakbonds.com/blog" />
+
+                {/* Open Graph / Facebook */}
+                <meta property="og:type" content="website" />
+                <meta property="og:url" content="https://pakbonds.com/blog" />
+                <meta property="og:title" content="Prize Bond Blog | Insights & Strategies" />
+                <meta property="og:description" content="Expert guides, latest news, and strategies to maximize your prize bond winnings." />
+                <meta property="og:site_name" content="PakBonds" />
+
+                {/* Twitter */}
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:url" content="https://pakbonds.com/blog" />
+                <meta name="twitter:title" content="Prize Bond Blog | Investment Insights" />
+                <meta name="twitter:description" content="Expert guides and strategies for Pakistani Prize Bonds." />
+
+                <script type="application/ld+json">
+                    {JSON.stringify([
+                        {
+                            "@context": "https://schema.org",
+                            "@type": "CollectionPage",
+                            "name": "PakBonds Blog",
+                            "description": "Educational resources and guides about Prize Bonds in Pakistan.",
+                            "url": "https://pakbonds.com/blog"
+                        },
+                        {
+                            "@context": "https://schema.org",
+                            "@type": "BreadcrumbList",
+                            "itemListElement": [
+                                {
+                                    "@type": "ListItem",
+                                    "position": 1,
+                                    "name": "Home",
+                                    "item": "https://pakbonds.com/"
+                                },
+                                {
+                                    "@type": "ListItem",
+                                    "position": 2,
+                                    "name": "Blog",
+                                    "item": "https://pakbonds.com/blog"
+                                }
+                            ]
+                        }
+                    ])}
+                </script>
             </Helmet>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

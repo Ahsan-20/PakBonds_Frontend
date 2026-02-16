@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api';
 import { toast } from 'react-toastify';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { Download as DownloadIcon, ExternalLink, Loader2, FileText, CheckCircle, ArrowLeft, ChevronRight, HardDrive, Clock, Shield, Calendar, Banknote } from 'lucide-react';
 
 const Download = () => {
@@ -162,6 +162,41 @@ const Download = () => {
                 <title>Download Prize Bond Lists 2026 | PDF & Text Format</title>
                 <meta name="description" content="Download official National Savings Prize Bond draw lists for 2026. Access historical records and latest draw results for all bond denominations." />
                 <meta name="keywords" content="download prize bond list, prize bond schedule 2026 pdf, national savings list download, bond draw results text file" />
+                <link rel="canonical" href="https://pakbonds.com/download" />
+
+                {/* Open Graph / Facebook */}
+                <meta property="og:type" content="website" />
+                <meta property="og:url" content="https://pakbonds.com/download" />
+                <meta property="og:title" content="Download Prize Bond Lists 2026" />
+                <meta property="og:description" content="Download official National Savings Prize Bond draw lists. Access historical records and latest draw results." />
+                <meta property="og:site_name" content="PakBonds" />
+
+                {/* Twitter */}
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:url" content="https://pakbonds.com/download" />
+                <meta name="twitter:title" content="Download Prize Bond Lists 2026" />
+                <meta name="twitter:description" content="Download official National Savings Prize Bond draw lists instantly." />
+
+                <script type="application/ld+json">
+                    {JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "BreadcrumbList",
+                        "itemListElement": [
+                            {
+                                "@type": "ListItem",
+                                "position": 1,
+                                "name": "Home",
+                                "item": "https://pakbonds.com/"
+                            },
+                            {
+                                "@type": "ListItem",
+                                "position": 2,
+                                "name": "Downloads",
+                                "item": "https://pakbonds.com/download"
+                            }
+                        ]
+                    })}
+                </script>
             </Helmet>
             {/* Header */}
             <div className="mb-12">
