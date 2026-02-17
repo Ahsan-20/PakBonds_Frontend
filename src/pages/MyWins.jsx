@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import {
     Trophy, Trash2, Loader2, ArrowLeft, Sparkles,
-    DollarSign, Calendar, Hash, Plus, X
+    DollarSign, Calendar, Hash, Plus, X, ChevronRight
 } from 'lucide-react';
 import { toast } from 'react-toastify';
 import api from '../api';
@@ -185,8 +185,8 @@ const MyWins = () => {
                                                 {bond.number}
                                             </p>
                                             <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${bond.source === 'manual'
-                                                    ? 'bg-zinc-700 text-zinc-300'
-                                                    : 'bg-amber-500/20 text-amber-400'
+                                                ? 'bg-zinc-700 text-zinc-300'
+                                                : 'bg-amber-500/20 text-amber-400'
                                                 }`}>
                                                 {bond.prize}
                                             </span>
