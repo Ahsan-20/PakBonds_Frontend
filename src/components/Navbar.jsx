@@ -10,7 +10,6 @@ const Navbar = () => {
     const location = useLocation();
     const [isOpen, setIsOpen] = useState(false);
     const [showUserMenu, setShowUserMenu] = useState(false);
-    const [isPrizeBondsOpen, setIsPrizeBondsOpen] = useState(false);
     const [isMyToolsOpen, setIsMyToolsOpen] = useState(false);
     const [isResourcesOpen, setIsResourcesOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
@@ -101,9 +100,10 @@ const Navbar = () => {
                                         </button>
                                         <div className="absolute top-full left-0 w-48 bg-[#0a0a0b] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top pt-2">
                                             <div className="py-2 flex flex-col">
+                                                <Link to="/my-wins" className="px-4 py-2 text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/5 text-left">My Wins</Link>
                                                 <Link to="/manage-bonds" className="px-4 py-2 text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/5 text-left">My Bonds</Link>
                                                 <Link to="/compare" className="px-4 py-2 text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/5 text-left">Check Results</Link>
-                                                <Link to="/my-wins" className="px-4 py-2 text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/5 text-left">My Wins</Link>
+                                                <Link to="/download" className="px-4 py-2 text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/5 text-left">Download</Link>
                                             </div>
                                         </div>
                                     </div>
@@ -116,18 +116,13 @@ const Navbar = () => {
 
                             {/* Resources Dropdown */}
                             <div className="relative group">
-                                <button className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-1 ${['/download', '/blog', '/about'].some(p => location.pathname.startsWith(p)) ? 'text-white' : 'text-zinc-300 hover:text-white'}`}>
+                                <button className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-1 ${['/blog', '/prizebonds', '/about'].some(p => location.pathname.startsWith(p)) ? 'text-white' : 'text-zinc-300 hover:text-white'}`}>
                                     Resources <ChevronDown size={14} className="group-hover:rotate-180 transition-transform" />
                                 </button>
-                                <div className="absolute top-full left-0 w-56 bg-[#0a0a0b] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top pt-2">
+                                <div className="absolute top-full left-0 w-48 bg-[#0a0a0b] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top pt-2">
                                     <div className="py-2 flex flex-col">
-                                        <div className="px-4 py-1.5 text-xs font-bold text-zinc-600 uppercase tracking-wider">Prize Bonds</div>
-                                        {['100', '200', '750', '1500', '25000', '40000'].map(val => (
-                                            <Link key={val} to={`/bonds/${val}`} className="px-4 py-1.5 text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/5 text-left pl-6">Rs. {val}</Link>
-                                        ))}
-                                        <div className="h-px bg-white/5 my-2" />
-                                        <Link to="/download" className="px-4 py-2 text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/5 text-left">Downloads</Link>
                                         <Link to="/blog" className="px-4 py-2 text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/5 text-left">Blog & Guides</Link>
+                                        <Link to="/prizebonds" className="px-4 py-2 text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/5 text-left">Prize Bonds</Link>
                                         <Link to="/about" className="px-4 py-2 text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/5 text-left">About Us</Link>
                                     </div>
                                 </div>
@@ -243,8 +238,8 @@ const Navbar = () => {
                                 </button>
                                 <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isMyToolsOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'}`}>
                                     <div className="pl-4 space-y-1">
-                                        <Link to="/dashboard" onClick={() => setIsOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/[0.05]">
-                                            Dashboard
+                                        <Link to="/my-wins" onClick={() => setIsOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/[0.05]">
+                                            My Wins
                                         </Link>
                                         <Link to="/manage-bonds" onClick={() => setIsOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/[0.05]">
                                             My Bonds
@@ -252,8 +247,8 @@ const Navbar = () => {
                                         <Link to="/compare" onClick={() => setIsOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/[0.05]">
                                             Check Results
                                         </Link>
-                                        <Link to="/my-wins" onClick={() => setIsOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/[0.05]">
-                                            My Wins
+                                        <Link to="/download" onClick={() => setIsOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/[0.05]">
+                                            Download
                                         </Link>
                                     </div>
                                 </div>
@@ -273,42 +268,11 @@ const Navbar = () => {
                             </button>
                             <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isResourcesOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
                                 <div className="pl-4 space-y-1 pb-2">
-                                    {/* Nested Prize Bonds */}
-                                    <div>
-                                        <button
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                setIsPrizeBondsOpen(!isPrizeBondsOpen);
-                                            }}
-                                            className="w-full flex items-center justify-between px-4 py-2.5 rounded-lg text-sm text-zinc-400 hover:text-white hover:bg-white/[0.05] transition-colors"
-                                        >
-                                            <span className="font-medium text-xs uppercase tracking-wider text-zinc-500">Prize Bonds</span>
-                                            <ChevronDown
-                                                size={14}
-                                                className={`transition-transform duration-200 ${isPrizeBondsOpen ? 'rotate-180' : ''}`}
-                                            />
-                                        </button>
-                                        <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isPrizeBondsOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'}`}>
-                                            <div className="px-4 py-2 grid grid-cols-2 gap-2 bg-zinc-900/30 rounded-lg mx-4">
-                                                {['100', '200', '750', '1500', '25000', '40000'].map(val => (
-                                                    <Link
-                                                        key={val}
-                                                        to={`/bonds/${val}`}
-                                                        onClick={() => setIsOpen(false)}
-                                                        className="text-center py-2 rounded-md text-xs font-mono text-zinc-400 hover:text-cyan-400 hover:bg-white/5 border border-white/[0.02] hover:border-white/10 transition-all"
-                                                    >
-                                                        Rs. {val}
-                                                    </Link>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <Link to="/download" onClick={() => setIsOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/[0.05]">
-                                        Downloads
-                                    </Link>
                                     <Link to="/blog" onClick={() => setIsOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/[0.05]">
                                         Blog & Guides
+                                    </Link>
+                                    <Link to="/prizebonds" onClick={() => setIsOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/[0.05]">
+                                        Prize Bonds
                                     </Link>
                                     <Link to="/about" onClick={() => setIsOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm text-zinc-400 hover:text-cyan-400 hover:bg-white/[0.05]">
                                         About Us

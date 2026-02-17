@@ -41,6 +41,7 @@ const PremiumVsStandard = lazy(() => import('./pages/Blog/posts/PremiumVsStandar
 const BondHistory = lazy(() => import('./pages/Blog/posts/BondHistory'));
 const AutomationGuide = lazy(() => import('./pages/Blog/posts/AutomationGuide'));
 const DenominationPage = lazy(() => import('./pages/DenominationPage'));
+const PrizeBondsHub = lazy(() => import('./pages/PrizeBondsHub'));
 
 // Legal Pages
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
@@ -124,6 +125,7 @@ function App() {
                 <Route path="/blog/automation-guide" element={<AutomationGuide />} />
 
                 {/* SEO Landing Pages */}
+                <Route path="/prizebonds" element={<PrizeBondsHub />} />
                 <Route path="/bonds/:message" element={<DenominationPage />} />
 
                 {/* Legal Routes */}
