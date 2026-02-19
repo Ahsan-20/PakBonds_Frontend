@@ -31,8 +31,8 @@ const Signup = () => {
     return (
         <div className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] py-12 px-4 relative overflow-hidden">
             <Helmet>
-                <title>Create Account | BondChecker</title>
-                <meta name="description" content="Sign up for a free BondChecker account. Join 50,000+ Pakistanis automating their prize bond checking. No credit card required." />
+                <title>Create Account | PakBonds</title>
+                <meta name="description" content="Sign up for a free PakBonds account. Join 50,000+ Pakistanis automating their prize bond checking. No credit card required." />
             </Helmet>
 
             {/* Background Gradient */}

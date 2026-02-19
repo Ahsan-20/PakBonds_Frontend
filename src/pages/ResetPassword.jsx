@@ -101,7 +101,7 @@ const ResetPassword = () => {
     return (
         <div className="min-h-screen bg-[#050505] text-white flex items-center justify-center p-4 relative overflow-hidden">
             <Helmet>
-                <title>Set New Password | BondChecker</title>
+                <title>Set New Password | PakBonds</title>
             </Helmet>
 
             {/* Background Effects */}

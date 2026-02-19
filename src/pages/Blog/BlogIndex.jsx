@@ -17,12 +17,16 @@ const BlogIndex = () => {
                 <meta property="og:title" content="Prize Bond Blog | Insights & Strategies" />
                 <meta property="og:description" content="Expert guides, latest news, and strategies to maximize your prize bond winnings." />
                 <meta property="og:site_name" content="PakBonds" />
+                <meta property="og:image" content="https://pakbonds.com/og-image.png" />
+                <meta property="og:image:width" content="1200" />
+                <meta property="og:image:height" content="630" />
 
                 {/* Twitter */}
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:url" content="https://pakbonds.com/blog" />
                 <meta name="twitter:title" content="Prize Bond Blog | Investment Insights" />
                 <meta name="twitter:description" content="Expert guides and strategies for Pakistani Prize Bonds." />
+                <meta name="twitter:image" content="https://pakbonds.com/og-image.png" />
 
                 <script type="application/ld+json">
                     {JSON.stringify([

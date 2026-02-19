@@ -5,12 +5,11 @@ import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
 import { HelmetProvider } from 'react-helmet-async';
 import { ToastContainer } from 'react-toastify';
-import { Loader2 } from 'lucide-react';
+
 import ReactGA from 'react-ga4';
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react"
 import 'react-toastify/dist/ReactToastify.css';
-import SchemaMarkup from './components/common/SchemaMarkup';
 import LoadingScreen from './components/LoadingScreen';
 
 // Lazy Load Pages
@@ -46,7 +45,7 @@ const PrizeBondsHub = lazy(() => import('./pages/PrizeBondsHub'));
 // Legal Pages
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('./pages/TermsOfService'));
-const About = lazy(() => import('./pages/About'));
+const About = lazy(() => import('./pages/AboutUs'));
 
 
 
@@ -88,7 +87,7 @@ function App() {
       <SpeedInsights />
       <AnalyticsTracker />
       <HelmetProvider>
-        <SchemaMarkup />
+
         <AuthProvider>
           <Layout>
             <ToastContainer

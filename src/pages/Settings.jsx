@@ -67,7 +67,7 @@ const Settings = () => {
     return (
         <div className="min-h-screen bg-[#050505] text-white pt-28 pb-12 px-4 relative overflow-hidden">
             <Helmet>
-                <title>Settings | BondChecker</title>
+                <title>Settings | PakBonds</title>
             </Helmet>
 
             {/* Background Effects */}

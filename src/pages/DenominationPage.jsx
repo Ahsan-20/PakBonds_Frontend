@@ -70,12 +70,16 @@ const DenominationPage = () => {
                 <meta property="og:title" content={`Rs. ${message} Prize Bond List 2026`} />
                 <meta property="og:description" content={`Check latest Rs. ${message} Prize Bond Draw Results, Lists, and Schedule. Instant search for winning numbers.`} />
                 <meta property="og:site_name" content="PakBonds" />
+                <meta property="og:image" content="https://pakbonds.com/og-image.png" />
+                <meta property="og:image:width" content="1200" />
+                <meta property="og:image:height" content="630" />
 
                 {/* Twitter */}
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:url" content={`https://pakbonds.com/bonds/${message}`} />
                 <meta name="twitter:title" content={`Rs. ${message} Prize Bond List 2026`} />
                 <meta name="twitter:description" content={`Latest Rs. ${message} Prize Bond Draw Results. Check if you won instantly.`} />
+                <meta name="twitter:image" content="https://pakbonds.com/og-image.png" />
 
                 <script type="application/ld+json">
                     {JSON.stringify([

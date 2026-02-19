@@ -15,6 +15,12 @@ const Navbar = () => {
     const [scrolled, setScrolled] = useState(false);
     const [unreadCount, setUnreadCount] = useState(0);
 
+    // Auto-close mobile menu on route change
+    useEffect(() => {
+        setIsOpen(false);
+        setShowUserMenu(false);
+    }, [location.pathname]);
+
     // Fetch Unread Count
     useEffect(() => {
         if (!user) return;

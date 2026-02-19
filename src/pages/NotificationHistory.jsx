@@ -71,7 +71,7 @@ const NotificationHistory = () => {
     return (
         <div className="min-h-screen pt-32 pb-20 max-w-4xl mx-auto px-6">
             <Helmet>
-                <title>Notifications | BondChecker</title>
+                <title>Notifications | PakBonds</title>
             </Helmet>
 
             <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">

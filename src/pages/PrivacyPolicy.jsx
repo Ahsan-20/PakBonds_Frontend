@@ -6,8 +6,24 @@ const PrivacyPolicy = () => {
     return (
         <div className="min-h-screen pt-32 pb-20">
             <Helmet>
-                <title>Privacy Policy | BondChecker Pakistan</title>
-                <meta name="description" content="Privacy Policy for BondChecker. Learn how we protect your prize bond data and personal information in accordance with Pakistani laws." />
+                <title>Privacy Policy | PakBonds Pakistan</title>
+                <meta name="description" content="Privacy Policy for PakBonds. Learn how we protect your prize bond data and personal information in accordance with Pakistani laws." />
+                <link rel="canonical" href="https://pakbonds.com/privacy-policy" />
+
+                <meta property="og:type" content="website" />
+                <meta property="og:url" content="https://pakbonds.com/privacy-policy" />
+                <meta property="og:title" content="Privacy Policy | PakBonds" />
+                <meta property="og:description" content="Learn how PakBonds protects your prize bond data and personal information in accordance with Pakistani laws." />
+                <meta property="og:site_name" content="PakBonds" />
+                <meta property="og:image" content="https://pakbonds.com/og-image.png" />
+                <meta property="og:image:width" content="1200" />
+                <meta property="og:image:height" content="630" />
+
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:url" content="https://pakbonds.com/privacy-policy" />
+                <meta name="twitter:title" content="Privacy Policy | PakBonds" />
+                <meta name="twitter:description" content="Learn how PakBonds protects your prize bond data and personal information." />
+                <meta name="twitter:image" content="https://pakbonds.com/og-image.png" />
             </Helmet>
 
             <div className="max-w-4xl mx-auto px-6">
@@ -18,7 +34,7 @@ const PrivacyPolicy = () => {
 
                 <div className="prose prose-invert prose-lg max-w-none text-zinc-300">
                     <p className="lead text-xl text-white/80 mb-8">
-                        At BondChecker, we take your privacy seriously. We understand that your financial data and prize bond numbers are sensitive assets. This policy outlines how we handle your data in compliance with Pakistan's data protection standards.
+                        At PakBonds, we take your privacy seriously. We understand that your financial data and prize bond numbers are sensitive assets. This policy outlines how we handle your data in compliance with Pakistan's data protection standards.
                     </p>
 
                     <div className="grid md:grid-cols-2 gap-6 mb-12">
@@ -65,7 +81,7 @@ const PrivacyPolicy = () => {
 
                     <h2 className="text-2xl font-bold text-white mt-12 mb-6">5. Contact Us</h2>
                     <p>
-                        If you have any questions about this Privacy Policy, please contact us at <a href="mailto:privacy@bondchecker.pk" className="text-emerald-400 hover:underline">privacy@bondchecker.pk</a>.
+                        If you have any questions about this Privacy Policy, please contact us at <a href="mailto:privacy@pakbonds.com" className="text-emerald-400 hover:underline">privacy@pakbonds.com</a>.
                     </p>
                 </div>
             </div>

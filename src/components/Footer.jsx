@@ -38,13 +38,18 @@ const Footer = () => {
                         <div>
                             <h4 className="text-white font-mono text-sm font-bold mb-6 tracking-wider uppercase opacity-50">Platform</h4>
                             <ul className="space-y-4">
-                                {['Login', 'Create Account', 'Check Results', 'Download Lists'].map((item, i) => (
+                                {[
+                                    { name: 'Login', path: '/login' },
+                                    { name: 'Create Account', path: '/signup' },
+                                    { name: 'Check Results', path: '/compare' },
+                                    { name: 'Download Lists', path: '/download' },
+                                ].map((item, i) => (
                                     <li key={i}>
                                         <Link
-                                            to={item === 'Create Account' ? '/signup' : `/${item.toLowerCase().replace(' ', '-')}`}
+                                            to={item.path}
                                             className="text-zinc-500 hover:text-cyan-400 text-sm transition-colors flex items-center gap-1 group"
                                         >
-                                            {item}
+                                            {item.name}
                                             <ArrowUpRight size={12} className="opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all" />
                                         </Link>
                                     </li>

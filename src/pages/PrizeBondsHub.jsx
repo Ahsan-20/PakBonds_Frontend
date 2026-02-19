@@ -18,6 +18,24 @@ const PrizeBondsHub = () => {
             <Helmet>
                 <title>Prize Bonds List | PakBonds</title>
                 <meta name="description" content="Explore all Prize Bond denominations in Pakistan. View schedules, winning lists, and details for 100, 200, 750, 1500, 25000, and 40000 bonds." />
+                <link rel="canonical" href="https://pakbonds.com/prizebonds" />
+
+                {/* Open Graph / Facebook */}
+                <meta property="og:type" content="website" />
+                <meta property="og:url" content="https://pakbonds.com/prizebonds" />
+                <meta property="og:title" content="Prize Bonds List | PakBonds" />
+                <meta property="og:description" content="Explore all Prize Bond denominations in Pakistan. View schedules, winning lists, and details for 100, 200, 750, 1500, 25000, and 40000 bonds." />
+                <meta property="og:site_name" content="PakBonds" />
+                <meta property="og:image" content="https://pakbonds.com/og-image.png" />
+                <meta property="og:image:width" content="1200" />
+                <meta property="og:image:height" content="630" />
+
+                {/* Twitter */}
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:url" content="https://pakbonds.com/prizebonds" />
+                <meta name="twitter:title" content="Prize Bonds List | PakBonds" />
+                <meta name="twitter:description" content="Explore all Prize Bond denominations in Pakistan. View schedules, winning lists, and details for all bonds." />
+                <meta name="twitter:image" content="https://pakbonds.com/og-image.png" />
             </Helmet>
 
             <div className="max-w-7xl mx-auto">

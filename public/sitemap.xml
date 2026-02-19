@@ -16,7 +16,12 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  
+  <url>
+    <loc>https://pakbonds.com/about</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
   <!-- Blog Posts -->
   <url>
     <loc>https://pakbonds.com/blog</loc>
@@ -39,6 +44,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://pakbonds.com/blog/how-to-claim</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://pakbonds.com/blog/schedule-2026</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -48,23 +58,27 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-
-  <!-- Legal -->
   <url>
-    <loc>https://pakbonds.com/privacy-policy</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://pakbonds.com/terms-of-service</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-</urlset>
-  <url>
-    <loc>https://pakbonds.com/about</loc>
+    <loc>https://pakbonds.com/blog/premium-vs-standard</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pakbonds.com/blog/history</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pakbonds.com/blog/automation-guide</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- SEO Hub Pages -->
+  <url>
+    <loc>https://pakbonds.com/prizebonds</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://pakbonds.com/download</loc>
@@ -102,5 +116,17 @@
     <loc>https://pakbonds.com/bonds/40000</loc>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
+  </url>
+
+  <!-- Legal -->
+  <url>
+    <loc>https://pakbonds.com/privacy-policy</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://pakbonds.com/terms-of-service</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
   </url>
 </urlset>

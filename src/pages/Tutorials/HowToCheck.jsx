@@ -7,7 +7,7 @@ const HowToCheck = () => (
     <div className="min-h-screen pt-32 pb-20">
         <Helmet>
             <title>How to Check Prize Bonds Online | Step-by-Step Guide</title>
-            <meta name="description" content="Learn the easiest way to check your Pakistani prize bonds online. Guide to using the BondChecker search and automation tools." />
+            <meta name="description" content="Learn the easiest way to check your Pakistani prize bonds online. Guide to using the PakBonds search and automation tools." />
         </Helmet>
 
         <article className="max-w-3xl mx-auto px-6">

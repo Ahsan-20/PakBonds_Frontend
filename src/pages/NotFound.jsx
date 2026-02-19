@@ -7,7 +7,7 @@ const NotFound = () => {
     return (
         <div className="min-h-screen pt-32 pb-20 px-6 flex flex-col items-center justify-center text-center">
             <Helmet>
-                <title>404 - Page Not Found | BondChecker</title>
+                <title>404 - Page Not Found | PakBonds</title>
                 <meta name="robots" content="noindex, nofollow" />
             </Helmet>
 

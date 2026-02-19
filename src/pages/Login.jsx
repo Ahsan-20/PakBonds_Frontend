@@ -32,7 +32,7 @@ const Login = () => {
     return (
         <div className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] py-12 px-4 relative overflow-hidden">
             <Helmet>
-                <title>Login | BondChecker</title>
+                <title>Login | PakBonds</title>
             </Helmet>
 
             {/* Background Gradient */}

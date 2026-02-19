@@ -21,12 +21,16 @@ const Home = () => {
                 <meta property="og:title" content="PakBonds | No.1 Automated Prize Bond Checker" />
                 <meta property="og:description" content="The easiest way to check Pakistani Prize Bonds online. PakBonds is tailored for overseas Pakistanis in UAE, UK, KSA & USA. Get instant win alerts via email." />
                 <meta property="og:site_name" content="PakBonds" />
+                <meta property="og:image" content="https://pakbonds.com/og-image.png" />
+                <meta property="og:image:width" content="1200" />
+                <meta property="og:image:height" content="630" />
 
                 {/* Twitter */}
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:url" content="https://pakbonds.com/" />
                 <meta name="twitter:title" content="PakBonds | No.1 Automated Prize Bond Checker" />
                 <meta name="twitter:description" content="The easiest way to check Pakistani Prize Bonds online. PakBonds is tailored for overseas Pakistanis. Get instant win alerts." />
+                <meta name="twitter:image" content="https://pakbonds.com/og-image.png" />
 
                 <script type="application/ld+json">
                     {JSON.stringify([
@@ -46,11 +50,7 @@ const Home = () => {
                             "@type": "Organization",
                             "name": "PakBonds",
                             "url": "https://pakbonds.com",
-                            "logo": "https://pakbonds.com/logo.svg",
-                            "sameAs": [
-                                "https://twitter.com/pakbonds",
-                                "https://facebook.com/pakbonds"
-                            ]
+                            "logo": "https://pakbonds.com/logo.svg"
                         }
                     ])}
                 </script>
