@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api';
 import { toast } from 'react-toastify';
-import { Plus, Upload, Trash2, RefreshCw, FileSpreadsheet, X, ChevronDown, Cpu, Shield, Save } from 'lucide-react';
+import { Plus, Upload, Trash2, RefreshCw, FileSpreadsheet, X, ChevronDown, Cpu, Shield, Save, ListOrdered } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { NeonButton } from '../components/ui/NeonButton'; // Assuming we can reuse or inline styles if not available
 import { GlassCard } from '../components/ui/GlassCard'; // Assuming reuse
@@ -14,8 +14,12 @@ const ManageBonds = () => {
     const [addNumbers, setAddNumbers] = useState('');
     const [deleteNumbers, setDeleteNumbers] = useState('');
     const [file, setFile] = useState(null);
-    const [activeTab, setActiveTab] = useState('view'); // 'view', 'add', 'upload', 'delete'
+    const [activeTab, setActiveTab] = useState('view'); // 'view', 'add', 'range', 'upload', 'delete'
     const [searchTerm, setSearchTerm] = useState(''); // New search state
+
+    // New Range State
+    const [rangeStart, setRangeStart] = useState('');
+    const [rangeEnd, setRangeEnd] = useState('');
 
     const denominations = ['100', '200', '750', '1500', '25000', '40000'];
 
@@ -73,6 +77,36 @@ const ManageBonds = () => {
         }
     };
 
+    const handleAddRange = async (e) => {
+        e.preventDefault();
+
+        if (rangeStart.length !== 6 || rangeEnd.length !== 6) {
+            toast.error("Both Start and End numbers must be exactly 6 digits.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('denomination', denomination);
+        formData.append('start_number', rangeStart);
+        formData.append('end_number', rangeEnd);
+
+        setLoading(true);
+        try {
+            const response = await api.post('/add_bond_range', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            });
+            toast.success(response.data.detail || 'Bond range added successfully');
+            setRangeStart('');
+            setRangeEnd('');
+            fetchBonds();
+            setActiveTab('view');
+        } catch (error) {
+            toast.error(error.response?.data?.detail || 'Failed to add bond range');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const handleUpload = async (e) => {
         e.preventDefault();
         if (!file) return;
@@ -126,6 +160,7 @@ const ManageBonds = () => {
     const tabs = [
         { id: 'view', label: 'INVENTORY', icon: Cpu },
         { id: 'add', label: 'MANUAL ENTRY', icon: Plus },
+        { id: 'range', label: 'RANGE ENTRY', icon: ListOrdered },
         { id: 'upload', label: 'DATA UPLOAD', icon: Upload },
         { id: 'delete', label: 'PURGE', icon: Trash2 },
     ];
@@ -295,6 +330,75 @@ const ManageBonds = () => {
                                         className="px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-black font-bold tracking-wide shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] transition-all disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-1"
                                     >
                                         EXECUTE UPLOAD
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    )}
+
+                    {/* RANGE ENTRY */}
+                    {activeTab === 'range' && (
+                        <div className="animate-fade-in max-w-2xl mx-auto">
+                            <div className="text-center mb-8">
+                                <div className="inline-flex w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 items-center justify-center mb-4 border border-emerald-500/20">
+                                    <ListOrdered size={24} />
+                                </div>
+                                <h2 className="text-2xl font-bold text-white">Continuous Range Entry</h2>
+                                <p className="text-zinc-400 text-sm mt-1">Automatically generate and store a sequence of bonds.</p>
+                            </div>
+
+                            <form onSubmit={handleAddRange} className="space-y-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-mono text-emerald-400 uppercase tracking-widest ml-1">Start Number (6 Digits)</label>
+                                        <div className="relative group">
+                                            <div className="absolute -inset-0.5 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-xl opacity-20 group-hover:opacity-40 blur transition duration-500" />
+                                            <input
+                                                type="text"
+                                                maxLength={6}
+                                                required
+                                                value={rangeStart}
+                                                onChange={(e) => setRangeStart(e.target.value.replace(/\D/g, ''))}
+                                                className="relative block w-full px-6 py-4 bg-black border border-white/10 rounded-xl text-white font-mono text-xl tracking-widest text-center shadow-inner placeholder-zinc-700 focus:outline-none focus:border-emerald-500/50 transition-all"
+                                                placeholder="000000"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-mono text-emerald-400 uppercase tracking-widest ml-1">End Number (6 Digits)</label>
+                                        <div className="relative group">
+                                            <div className="absolute -inset-0.5 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-xl opacity-20 group-hover:opacity-40 blur transition duration-500" />
+                                            <input
+                                                type="text"
+                                                maxLength={6}
+                                                required
+                                                value={rangeEnd}
+                                                onChange={(e) => setRangeEnd(e.target.value.replace(/\D/g, ''))}
+                                                className="relative block w-full px-6 py-4 bg-black border border-white/10 rounded-xl text-white font-mono text-xl tracking-widest text-center shadow-inner placeholder-zinc-700 focus:outline-none focus:border-emerald-500/50 transition-all"
+                                                placeholder="999999"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-xl p-4 text-center">
+                                    <p className="text-zinc-400 text-sm">
+                                        Generating: <span className="text-emerald-400 font-mono font-bold">
+                                            {rangeStart.length === 6 && rangeEnd.length === 6 && parseInt(rangeEnd) >= parseInt(rangeStart)
+                                                ? ((parseInt(rangeEnd) - parseInt(rangeStart)) + 1).toLocaleString()
+                                                : 0}
+                                        </span> total bonds
+                                    </p>
+                                </div>
+
+                                <div className="flex justify-end">
+                                    <button
+                                        type="submit"
+                                        disabled={loading || rangeStart.length !== 6 || rangeEnd.length !== 6 || parseInt(rangeStart) > parseInt(rangeEnd)}
+                                        className="w-full md:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-black font-bold tracking-wide shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] transition-all disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-1"
+                                    >
+                                        GENERATE SEQUENCE
                                     </button>
                                 </div>
                             </form>

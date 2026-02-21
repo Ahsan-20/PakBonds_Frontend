@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import api from '../api';
 import LoadingScreen from '../components/LoadingScreen';
+import { AlertTriangle } from 'lucide-react';
 
 // --- Design System Tokens ---
 // Backgrounds: Obsidian (#050505), Glass (#ffffff05)
@@ -222,6 +223,7 @@ const Dashboard = () => {
     const [wins, setWins] = useState({ total_wins: 0, total_amount: 0 });
     const [bondCount, setBondCount] = useState(0);
     const [loading, setLoading] = useState(true);
+    const [isEmailVerified, setIsEmailVerified] = useState(true);
 
     useEffect(() => {
         if (!user?.email) {
@@ -239,6 +241,15 @@ const Dashboard = () => {
                 });
             } catch (e) {
                 console.error("Dashboard data load failed", e);
+            }
+
+            try {
+                const meResponse = await api.get('/me');
+                if (meResponse.data && 'is_email_verified' in meResponse.data) {
+                    setIsEmailVerified(meResponse.data.is_email_verified);
+                }
+            } catch (e) {
+                console.error("Failed to load user profile", e);
             } finally {
                 setLoading(false);
             }
@@ -254,6 +265,16 @@ const Dashboard = () => {
     return (
         <div className="min-h-screen bg-[#050505] text-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-28 pb-12">
+
+                {!isEmailVerified && (
+                    <div className="mb-6 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-500 flex items-start gap-3">
+                        <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                        <div>
+                            <h3 className="font-bold text-sm">Verify your email address</h3>
+                            <p className="text-xs text-amber-500/80 mt-1 mt-1">Please check your inbox for a verification link. Without verifying your email, you might lose access to your account if you forget your password.</p>
+                        </div>
+                    </div>
+                )}
 
                 {/* Header Section */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">

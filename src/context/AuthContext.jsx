@@ -8,30 +8,42 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const token = localStorage.getItem('access_token');
-        const email = localStorage.getItem('user_email');
-        const userId = localStorage.getItem('user_id');
-        if (token && email) {
-            setUser({ email, user_id: userId });
-        }
-        setLoading(false);
+        const checkAuth = async () => {
+            try {
+                const response = await api.get('/me');
+                if (response.data && response.data.email) {
+                    setUser({
+                        email: response.data.email,
+                        user_id: response.data.user_id
+                    });
+                }
+            } catch (error) {
+                // If the check fails (e.g. 401 Unauthorized), the user is not logged in or cookie expired.
+                console.log("No valid session found.");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        checkAuth();
     }, []);
 
     const login = async (email, password) => {
         try {
             const response = await api.post('/login', { email, password });
-            const { access_token, user_id } = response.data;
 
-            localStorage.setItem('access_token', access_token);
-            localStorage.setItem('user_email', email);
-            localStorage.setItem('user_id', user_id);
-
+            // The backend now sets the cookies automatically. 
+            // We just extract user details from the JSON response to update the UI state.
+            const { user_id } = response.data;
             setUser({ email, user_id });
+
             return { success: true };
         } catch (error) {
+            const detail = error.response?.data?.detail;
             return {
                 success: false,
-                message: error.response?.data?.detail || 'Login failed'
+                message: typeof detail === 'string' ? detail : (detail?.message || 'Login failed'),
+                errorCode: detail?.error
             };
         }
     };
@@ -48,11 +60,21 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const logout = () => {
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('user_email');
-        localStorage.removeItem('user_id');
-        setUser(null);
+    const logout = async () => {
+        try {
+            // Call the backend to clear the HttpOnly cookies
+            await api.post('/logout');
+        } catch (error) {
+            console.error("Error logging out", error);
+        } finally {
+            // Clear frontend state regardless of API success to ensure user is logged out locally
+            setUser(null);
+            // If they happen to have old localStorage tokens from before the update, clear them just in case
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            localStorage.removeItem('user_email');
+            localStorage.removeItem('user_id');
+        }
     };
 
     return (

@@ -23,6 +23,7 @@ const Download = lazy(() => import('./pages/Download'));
 const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
 const ResetPassword = lazy(() => import('./pages/ResetPassword'));
 const ChangePassword = lazy(() => import('./pages/ChangePassword'));
+const VerifyEmail = lazy(() => import('./pages/VerifyEmail'));
 const Settings = lazy(() => import('./pages/Settings'));
 const MyWins = lazy(() => import('./pages/MyWins'));
 const NotificationHistory = lazy(() => import('./pages/NotificationHistory'));
@@ -110,6 +111,7 @@ function App() {
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
+                <Route path="/verify-email" element={<VerifyEmail />} />
 
                 {/* Blog Routes */}
                 <Route path="/blog" element={<BlogIndex />} />

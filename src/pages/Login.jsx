@@ -1,19 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-toastify';
-import { Lock, Mail, Loader2, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Lock, Mail, Loader2, ArrowRight, ShieldCheck, MailWarning } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
+import api from '../api';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const [requiresVerification, setRequiresVerification] = useState(false);
+    const [resendLoading, setResendLoading] = useState(false);
+
     const { login } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
 
     const from = location.state?.from?.pathname || '/dashboard';
+
+    const checkVerification = async () => {
+        setLoading(true);
+        const result = await login(email, password);
+        setLoading(false);
+
+        if (result.success) {
+            toast.success('Email verified successfully! Welcome.');
+            navigate(from, { replace: true });
+        } else if (result.errorCode !== 'email_verification_required') {
+            toast.error(result.message);
+            setRequiresVerification(false); // They got a different error (like wrong password all of a sudden), reset state
+        } else {
+            toast.info('Still waiting for verification. Please check your email.');
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -25,7 +45,23 @@ const Login = () => {
             toast.success('Welcome back, Bond Holder.');
             navigate(from, { replace: true });
         } else {
-            toast.error(result.message);
+            if (result.errorCode === 'email_verification_required') {
+                setRequiresVerification(true);
+            } else {
+                toast.error(result.message);
+            }
+        }
+    };
+
+    const handleResend = async () => {
+        setResendLoading(true);
+        try {
+            const res = await api.post('/resend-verification', { email });
+            toast.success(res.data.message || 'Verification email sent!');
+        } catch (error) {
+            toast.error(error.response?.data?.detail || 'Failed to resend email.');
+        } finally {
+            setResendLoading(false);
         }
     };
 
@@ -99,8 +135,11 @@ const Login = () => {
 
                         <button
                             type="submit"
-                            disabled={loading}
-                            className="w-full flex items-center justify-center py-3.5 px-4 rounded-xl text-sm font-bold text-black bg-cyan-400 hover:bg-cyan-300 transition-all disabled:opacity-50 hover:shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:-translate-y-0.5"
+                            disabled={loading || requiresVerification}
+                            className={`w-full flex items-center justify-center py-3.5 px-4 rounded-xl text-sm font-bold transition-all ${requiresVerification
+                                ? 'bg-zinc-800 text-zinc-500 cursor-not-allowed border border-white/5'
+                                : 'text-black bg-cyan-400 hover:bg-cyan-300 hover:shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:-translate-y-0.5 disabled:opacity-50'
+                                }`}
                         >
                             {loading ? (
                                 <Loader2 className="animate-spin h-5 w-5" />
@@ -112,14 +151,53 @@ const Login = () => {
                         </button>
                     </form>
 
-                    <div className="mt-8 pt-6 border-t border-white/10 text-center">
-                        <p className="text-zinc-500 text-sm">
-                            Don't have an account?{' '}
-                            <Link to="/signup" className="text-cyan-400 hover:text-cyan-300 font-medium transition-colors">
-                                Sign Up
-                            </Link>
-                        </p>
-                    </div>
+                    {requiresVerification && (
+                        <div className="mt-6 pt-6 border-t border-amber-500/20 text-center animate-fade-in">
+                            <div className="bg-amber-500/10 rounded-xl p-4 border border-amber-500/20 mb-4 text-left flex items-start gap-3">
+                                <MailWarning className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
+                                <div>
+                                    <h4 className="text-amber-500 font-bold text-sm">Verification Required</h4>
+                                    <p className="text-amber-500/80 text-xs mt-1">
+                                        Your 24-hour grace period has expired. You must verify your email address to log in.
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="space-y-3">
+                                <button
+                                    onClick={checkVerification}
+                                    disabled={loading}
+                                    className="w-full flex items-center justify-center py-3 px-4 rounded-lg text-sm font-bold text-black bg-amber-500 hover:bg-amber-400 transition-all disabled:opacity-50"
+                                >
+                                    {loading ? (
+                                        <Loader2 className="animate-spin h-4 w-4 mr-2" />
+                                    ) : null}
+                                    I HAVE VERIFIED - LOGIN NOW
+                                </button>
+
+                                <button
+                                    onClick={handleResend}
+                                    disabled={resendLoading}
+                                    className="w-full flex items-center justify-center py-3 px-4 rounded-lg text-sm font-bold text-amber-500 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 transition-all disabled:opacity-50"
+                                >
+                                    {resendLoading ? (
+                                        <Loader2 className="animate-spin h-4 w-4 mr-2" />
+                                    ) : null}
+                                    {resendLoading ? 'SENDING...' : 'RESEND VERIFICATION LINK'}
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
+                    {!requiresVerification && (
+                        <div className="mt-8 pt-6 border-t border-white/10 text-center">
+                            <p className="text-zinc-500 text-sm">
+                                Don't have an account?{' '}
+                                <Link to="/signup" className="text-cyan-400 hover:text-cyan-300 font-medium transition-colors">
+                                    Sign Up
+                                </Link>
+                            </p>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
