@@ -11,6 +11,12 @@ const api = axios.create({
     },
 });
 
+// These endpoints are allowed to fail with 401 without triggering a refresh/redirect.
+// /me — checked on page load to detect existing session; a 401 just means "not logged in", that's fine.
+// /refresh — if this fails there's no valid session; we handle it below.
+// /login  — obviously shouldn't redirect to login if login itself returns 401 (wrong credentials).
+const SKIP_REFRESH_URLS = ['/me', '/refresh', '/login'];
+
 // Add a response interceptor to handle 401 errors for silent token refresh
 let isRefreshing = false;
 let failedQueue = [];
@@ -31,12 +37,11 @@ api.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config;
+        const requestUrl = originalRequest?.url || '';
 
-        // Prevent infinite loops if /refresh itself fails
-        if (originalRequest.url === '/refresh') {
-            if (!window.location.pathname.startsWith('/login')) {
-                window.location.href = '/login';
-            }
+        // For these special endpoints, just reject and let the caller handle it.
+        // This prevents the /me check on page load from triggering a refresh loop.
+        if (SKIP_REFRESH_URLS.some(url => requestUrl.startsWith(url))) {
             return Promise.reject(error);
         }
 
@@ -67,9 +72,9 @@ api.interceptors.response.use(
 
             } catch (_error) {
                 processQueue(_error);
-                if (!window.location.pathname.startsWith('/login')) {
-                    window.location.href = '/login';
-                }
+                // Use a custom event so React Router (not window.location) handles the redirect.
+                // This avoids a full page reload that would restart the auth check and create a loop.
+                window.dispatchEvent(new CustomEvent('auth:session-expired'));
                 return Promise.reject(_error);
             } finally {
                 isRefreshing = false;

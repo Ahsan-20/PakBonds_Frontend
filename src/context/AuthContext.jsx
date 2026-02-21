@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../api';
 
 const AuthContext = createContext();
@@ -6,6 +7,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const checkAuth = async () => {
@@ -18,7 +20,9 @@ export const AuthProvider = ({ children }) => {
                     });
                 }
             } catch (error) {
-                // If the check fails (e.g. 401 Unauthorized), the user is not logged in or cookie expired.
+                // A 401 here is completely normal for a non-logged-in visitor.
+                // The interceptor will NOT redirect for /me (it's in SKIP_REFRESH_URLS).
+                setUser(null);
                 console.log("No valid session found.");
             } finally {
                 setLoading(false);
@@ -28,11 +32,25 @@ export const AuthProvider = ({ children }) => {
         checkAuth();
     }, []);
 
+    // Listen for the custom event dispatched by api.js when a token refresh fails.
+    // This lets us redirect via React Router (no full page reload = no loop).
+    useEffect(() => {
+        const handleSessionExpired = () => {
+            setUser(null);
+            navigate('/login', { replace: true });
+        };
+
+        window.addEventListener('auth:session-expired', handleSessionExpired);
+        return () => {
+            window.removeEventListener('auth:session-expired', handleSessionExpired);
+        };
+    }, [navigate]);
+
     const login = async (email, password) => {
         try {
             const response = await api.post('/login', { email, password });
 
-            // The backend now sets the cookies automatically. 
+            // The backend sets the cookies automatically.
             // We just extract user details from the JSON response to update the UI state.
             const { user_id } = response.data;
             setUser({ email, user_id });
